@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: chief-masik
+      comment: "Add some role"
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "USER"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "GENERAL"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: name
+                  value: "ADMIN"

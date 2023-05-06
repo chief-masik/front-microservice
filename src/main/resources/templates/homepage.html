@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Аккаунт</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/homepage-style.css">
+</head>
+<body>
+
+<section class="first-line"></section>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center text-black">Bello Credit Service</h1>
+
+                <h1 class="text-center color1">Переводы</h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="first-line"></section>
+
+<footer>
+    <br/><br/>
+    <form th:method="POST" th:action="@{/logout}" >
+        <br/>
+        <input type="submit" value="logout">
+    </form>
+
+    <br/><br/>
+    <div class="container">
+        <div class="text-box">
+            <h1 class="text-center text-black">by Maksim Pyatakov, 2023</h1>
+        </div>
+    </div>
+</footer>
+
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <th:block th:each="transfer: ${transfers}">
+                <div class="col-xxl-4 col-xl-4 col-md-6 col-sm-10">
+                    <br>
+                    <div class="text-center"><i class="stack-of-money"></i></div>
+                    <h5 class="text-center color1"
+                        th:text="'Id перевода - ' + ${transfer.getTransferId()}"></h5>
+                    <h5 class="text-center color1"
+                        th:text="'Id отправителя - ' + ${transfer.getSenderId()}"></h5>
+                    <h5 class="text-center color1"
+                        th:text="'Id получателя - ' + ${transfer.getRecipientId()}"></h5>
+                    <h5 class="text-center color1"
+                        th:text="'Сумма перевода - ' + ${transfer.getSum()}"></h5>
+                    <h5 class="text-center color1"
+                        th:text="'Время - ' + ${#temporals.format(transfer.getLocalDateTime(), 'dd-MM-yyyy HH:mm')}"></h5>
+                    <br>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

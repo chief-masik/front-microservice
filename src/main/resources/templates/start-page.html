@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/start-page-style.css">
+</head>
+<body>
+
+<section class="first-line"></section>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center text-black">Bello Credit Service</h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="first-line"></section>
+
+<footer>
+    <div class="form-wrap">
+        <div class="profile">
+            <h1 class="text-black">Bello!</h1>
+            <br/>
+            <div class="text-center"><i class="minion"></i></div>
+        </div>
+        <form th:method="POST" th:action="@{/perform_login}" >
+            <br/>
+            <label class="color2">имя: </label>
+            <br/>
+            <input type="text" name='username'>
+            <br/>
+            <label class="color2">пароль: </label>
+            <br/>
+            <input type="text" name='password'>
+            <br/><br/>
+            <input name="submit" type="submit" value="Войти!">
+            <br/>
+        </form>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="text-box">
+            <h4><a class="text-black" href="/account/registration">Зарегестрироваться</a></h4>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="text-box">
+            <h1 class="text-center text-black">by Maksim Pyatakov, 2023</h1>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap');
+
+:root {
+    --colorRed: #EE6A59;
+    --colorMilk: #ECE6CD;
+    --colorOrange: #F9AC67;
+    --colorSea: #3A3F58;
+    --colorOrangeV: #ED5D23;
+    --colorOrangeP: #FFA825;
+    --colorDarkPurple: #380036;
+    --colorLightBlue: #C5E4E3;
+    --colorX: #BEC7C9;
+    --colorDarkX: #A8B0B2;
+    --colorYellow: #FCE700;
+}
+
+header {
+    padding: 1.5% 0;
+    font-family: 'Cormorant Garamond', serif;
+    background: var(--colorYellow);
+}
+
+footer {
+    padding: 8.5% 0;
+    font-family: 'Cormorant Garamond', serif;
+    background: url("../svg/grid.svg"), var(--colorX);
+    background-size: 1.7%;
+}
+a {
+    text-decoration: none;
+}
+
+.first-line {
+    padding: 3px 0;
+    background: black;
+}
+
+.color1 {
+    color: var(--colorDarkPurple);
+}
+.color2 {
+     color: var(--colorSea)
+ }
+
+.finally-text {
+    background-color: var(--colorDarkX);
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+}
+
+
+
+.emoji-heart-eyes {
+    content: url("../svg/emoji-heart-eyes-fill.svg");
+}
+
+.arrow-right-circle-fill {
+    content: url("../svg/arrow-right-circle-fill.svg");
+}
+
+.hello {
+    content: url("../svg/hello-hand.svg");
+}
+.minion {
+    content: url("../svg/minion.svg");
+}
+
+
+.form-wrap {
+    margin-left: 33.5%;
+    width: 33%;
+    background: var(--colorYellow);
+    border-radius: 30px;
+    text-align: center;
+}
+form {  /* правая часть окна */
+    background: var(--colorMilk);
+    float: right;
+    width: calc(100% - 50%);
+    padding: 30px;
+    border-radius: 0 20px 20px 0;
+    color: #51585e;
+    font-size: x-large;
+}
+
+.profile {   /* левая часть окна */
+    width: 50%;
+    float: left;
+    text-align: center;
+    padding: 30px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+.text-box {   /* используется в нижнем кружке */
+    width: auto;
+    padding: 8px;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    margin: 0 auto;
+}
+
+
+
+.form-wrap:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+

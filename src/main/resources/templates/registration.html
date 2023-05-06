@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Регистрация</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/registration-style.css">
+</head>
+<body>
+
+<section class="first-line"></section>
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center text-black">Bello Credit Service</h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="first-line"></section>
+
+<footer>
+    <div class="form-wrap">
+        <div class="profile">
+            <h1 class="text-black">Registration!</h1>
+            <br/>
+            <div class="text-center"><i class="minion"></i></div>
+        </div>
+        <form th:method="POST" th:action="@{/account/registration}" th:object="${accountForm}" >
+            <br/>
+            <label for="name" class="color2">имя: </label>
+            <br/>
+            <input type="text" th:field="*{name}" id='name'>
+            <br/>
+            <label for="password" class="color2">пароль: </label>
+            <br/>
+            <input type="text" th:field="*{password}" id='password'>
+            <br/>
+            <h4 class="text-center color-problem" th:text="${problem}"></h4>
+            <br/>
+            <input name="submit" type="submit" value="Зарегестрироваться">
+            <br/>
+        </form>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="text-box">
+            <h4><a class="text-black" href="/account/start-page">Вернуться назад</a></h4>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="text-box">
+            <h1 class="text-center text-black">by Maksim Pyatakov, 2023</h1>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
