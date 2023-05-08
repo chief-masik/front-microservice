@@ -33,12 +33,4 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
-    @Override
-    public LoanOrderCreatedDTO createLoanOrder(LoanOrderToCreateDTO loanOrderDTO) {
-
-        LoanOrderCreatedDTO loanOrderCreatedDTO = new LoanOrderCreatedDTO();
-        loanOrderCreatedDTO.setAccount_id(((Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
-
-        return null;
-    }
 }

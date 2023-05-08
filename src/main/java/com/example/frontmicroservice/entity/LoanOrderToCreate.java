@@ -1,14 +1,12 @@
 package com.example.frontmicroservice.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Data
+@Builder
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class LoanOrderToCreateDTO {
+public class LoanOrderToCreate {
     @NonNull
     private Long userId;
     @NonNull

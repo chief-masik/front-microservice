@@ -1,68 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Аккаунт</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order - Bello Credit Service</title>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/homepage-style.css">
 </head>
 <body>
+<div class="container">
+    <div class="header">Bello Credit Service</div>
 
-<section class="first-line"></section>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-center mb-3">Tariff List</h2>
+            <div class="tariff-list">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Interest Rate</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center text-black">Bello Credit Service</h1>
+                        <tr th:each="tariff : ${tariffs}">
 
-                <h1 class="text-center color1">Переводы</h1>
+                            <td th:text="${tariff.id}"></td>
+                            <td th:text="${tariff.type}"></td>
+                            <td th:text="${tariff.interestRate}"></td>
+
+                            <td>
+                                <form th:action="@{/account/newOrder}" method="POST">
+                                    <input type="hidden" th:name="tariffId" th:value="${tariff.id}">
+                                    <button type="submit">Select</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-center mb-3">Order List</h2>
+            <div class="order-list">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Tariff ID</th>
+                        <th>Status</th>
+                        <th>Time Inserted</th>
+                        <th>Time Updated</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <!-- Display tariff id, type, and interest rate -->
+                        <td th:text="${order.orderId}"></td>
+                        <td th:text="${order.tariffId}"></td>
+                        <td th:text="${order.status}"></td>
+                        <td th:text="${order.timeInsert}"></td>
+                        <td th:text="${order.timeUpdate}"></td>
+                        <!-- Create a form with a button to submit a POST request to /account/newOrder with the selected tariff ID -->
+                        <td>
+                            <form th:action="@{/account/newOrder}" method="POST">
+                                <input type="hidden" th:name="tariffId" th:value="${tariff.id}">
+                                <button type="submit">Select</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</header>
 
-<section class="first-line"></section>
-
-<footer>
-    <br/><br/>
-    <form th:method="POST" th:action="@{/logout}" >
-        <br/>
-        <input type="submit" value="logout">
-    </form>
-
-    <br/><br/>
-    <div class="container">
-        <div class="text-box">
-            <h1 class="text-center text-black">by Maksim Pyatakov, 2023</h1>
-        </div>
+    <div class="text-center mt-5">
+        <p>by Maksim Pyatakov, 2023</p>
     </div>
-</footer>
-
-<section class="about">
-    <div class="container">
-        <div class="row">
-            <th:block th:each="transfer: ${transfers}">
-                <div class="col-xxl-4 col-xl-4 col-md-6 col-sm-10">
-                    <br>
-                    <div class="text-center"><i class="stack-of-money"></i></div>
-                    <h5 class="text-center color1"
-                        th:text="'Id перевода - ' + ${transfer.getTransferId()}"></h5>
-                    <h5 class="text-center color1"
-                        th:text="'Id отправителя - ' + ${transfer.getSenderId()}"></h5>
-                    <h5 class="text-center color1"
-                        th:text="'Id получателя - ' + ${transfer.getRecipientId()}"></h5>
-                    <h5 class="text-center color1"
-                        th:text="'Сумма перевода - ' + ${transfer.getSum()}"></h5>
-                    <h5 class="text-center color1"
-                        th:text="'Время - ' + ${#temporals.format(transfer.getLocalDateTime(), 'dd-MM-yyyy HH:mm')}"></h5>
-                    <br>
-                </div>
-            </th:block>
-        </div>
-    </div>
-</section>
-
+</div>
 </body>
 </html>

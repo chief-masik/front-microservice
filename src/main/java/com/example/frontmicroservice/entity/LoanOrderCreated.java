@@ -6,15 +6,21 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class LoanOrderCreatedDTO {
+public class LoanOrderCreated {
     @NonNull
-    private Long account_id;
+    private UUID orderId;
+    @NonNull
+    private Long tariffId;
     @NonNull
     private String status;
     @NonNull
-    UUID orderId;
+    private LocalDateTime timeInsert;
+    @NonNull
+    private LocalDateTime timeUpdate;
+
 }

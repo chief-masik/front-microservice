@@ -19,6 +19,9 @@
 		<netflix.eureka.version>4.0.1</netflix.eureka.version>
 		<liquibase-core.version>4.21.1</liquibase-core.version>
 		<postgreSQL.version>42.6.0</postgreSQL.version>
+		<jsonpath.version>2.8.0</jsonpath.version>
+		<validation.api.version>2.0.1.Final</validation.api.version>
+		<hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
 	</properties>
 
 	<dependencies>
@@ -77,6 +80,29 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgreSQL.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>${jsonpath.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.validator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
 		</dependency>
 	</dependencies>
 

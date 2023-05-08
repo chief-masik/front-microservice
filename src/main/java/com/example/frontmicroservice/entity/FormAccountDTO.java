@@ -1,15 +1,18 @@
 package com.example.frontmicroservice.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class FormAccountDTO {
-    @NonNull
+    @NotBlank(message = "name_empty")
+    @Pattern(regexp = "^[a-zA-Z0-9а-яА-Я. _-]{4,15}$", message = "incorrect_name")
     private String name;
-    @NonNull
+    @NotBlank(message = "password_empty")
+    @Pattern(regexp = "^[a-zA-Z0-9а-яА-Я.,:;_@$!%?&+-]{3,32}$", message = "incorrect_password")
     private String password;
 }
