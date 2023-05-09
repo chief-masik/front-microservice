@@ -5,10 +5,12 @@ import lombok.*;
 import java.util.UUID;
 
 @Data
-@Builder    // для тестов
+@Builder
+@NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class LoanOrderToDelete {
-    @NonNull
+
     private Long userId;
     @NonNull
     private UUID orderId;

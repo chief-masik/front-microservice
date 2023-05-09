@@ -1,8 +1,6 @@
 package com.example.frontmicroservice.controller;
 
-import com.example.frontmicroservice.entity.FormAccountDTO;
-import com.example.frontmicroservice.entity.LoanOrderToCreate;
-import com.example.frontmicroservice.entity.LoanOrderToDelete;
+import com.example.frontmicroservice.entity.*;
 import com.example.frontmicroservice.response.Response;
 import com.example.frontmicroservice.response.data.ResponseOrderId;
 import com.example.frontmicroservice.response.data.ResponseOrders;
@@ -11,10 +9,12 @@ import com.example.frontmicroservice.response.data.ResponseTariffs;
 import com.example.frontmicroservice.response.error.Error;
 import com.example.frontmicroservice.service.AccountService;
 import com.example.frontmicroservice.service.LoanOrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,12 +28,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-
+    private Long userId;
     @Autowired
     AccountService accountService;
     @Autowired
     LoanOrderService loanOrderService;
 
+    @Operation(summary = "Registration page")
     @GetMapping("/registration")
     public String getRegistration(@RequestParam(name = "problem", required = false) String problem, Model model) {
 
@@ -43,6 +44,7 @@ public class AccountController {
         return "registration";
     }
 
+    @Operation(summary = "Login on start page")
     @PostMapping("/registration")
     public String postRegistration(@ModelAttribute("accountForm") @Valid FormAccountDTO accountForm, BindingResult bindingResult) {
         String problem;
@@ -55,51 +57,73 @@ public class AccountController {
         else {
             problem = accountService.saveAccount(accountForm);
 
-            if (problem != null) return "redirect:http://localhost:8765/account/registration?problem=" + problem;
-            else return "start-page";
+            if (problem != null)
+                return "redirect:http://localhost:8765/account/registration?problem=" + problem;
+            else
+                return "start-page";
         }
     }
 
+    @Operation(summary = "Start page")
     @GetMapping("/start-page")
     public String startPage() {
-
         return "start-page";
     }
 
+    @Operation(summary = "Get homepage")
     @GetMapping("/homepage")
-    public String homepage(Model model) {
-        Response<ResponseTariffs> responseTariffs = loanOrderService.getAllTariff();
-        Response<ResponseOrders> responseOrders = loanOrderService.getOrdersById();
+    public String homepage(@RequestParam(name = "problem", required = false) String problem, Model model) {
 
+        userId = ((Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        model.addAttribute("selectTariff", new SelectTariff());
+        model.addAttribute("loanOrderToDelete", new LoanOrderToDelete());
+        if(problem != null)
+            model.addAttribute("problem", problem);
+
+        Response<ResponseTariffs> responseTariffs = loanOrderService.getAllTariff();            // тарифы
         model.addAttribute("tariffs", responseTariffs.getData().getTariffs());
+        Response<ResponseOrders> responseOrders = loanOrderService.getOrdersById(userId);       // заявки
         model.addAttribute("orders", responseOrders.getData().getOrders());
 
-        return "/homepage";
+        return "homepage";
     }
 
+    @Operation(summary = "Create new order")
     @PostMapping("/newOrder")
-    public String newOrder(@ModelAttribute("type") Long id, Model model) {
+    public String newOrder(@ModelAttribute SelectTariff selectTariff) {
 
-        LoanOrderToCreate loanOrderToCreate = LoanOrderToCreate.builder().userId(id).tariffId(1L).build();
+        String problem = "";
+        LoanOrderToCreate loanOrderToCreate = LoanOrderToCreate.builder()
+                .userId(userId)
+                .tariffId(selectTariff.getTariffId()).build();
+
         Response<ResponseOrderId> response = loanOrderService.newOrder(loanOrderToCreate);
+        if (response.getError() != null)
+            problem = "?problem=" + response.getError().getCode();
 
-        return "start-page";
+        return "redirect:http://localhost:8765/account/homepage" + problem;
     }
+
+    @Operation(summary = "Delete order")
+    @PostMapping("/deleteOrder")
+    public String deleteOrder(@ModelAttribute("accountForm") LoanOrderToDelete loanOrderToDelete) {
+
+        String problem = "";
+        loanOrderToDelete.setUserId(userId);
+
+        Error error = loanOrderService.deleteOrder(loanOrderToDelete);
+        if (!error.getCode().equals(HttpStatus.OK.toString()))
+            problem = "?problem=" + error.getCode();
+
+        return "redirect:http://localhost:8765/account/homepage" + problem;
+    }
+
+    @Operation(summary = "Get order status")
     @GetMapping("/getStatus")
     public String getStatus() {
 
         UUID uuid = UUID.fromString("72345817-3fcf-4bd7-aaf6-276960262e9c");
         Response<ResponseStatus> response = loanOrderService.getStatus(uuid);
-
-        return "start-page";
-    }
-    @PostMapping("/deleteOrder")
-    public String deleteOrder(@ModelAttribute("accountForm") @Valid LoanOrderToDelete loanOrderToDelete, BindingResult bindingResult) {
-
-        Error error = loanOrderService.deleteOrder(loanOrderToDelete);
-
-        if(error.getCode() == HttpStatus.OK.toString())
-            System.out.println("/////////////////");
 
         return "start-page";
     }

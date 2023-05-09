@@ -1,19 +1,14 @@
 package com.example.frontmicroservice.config;
 
-import com.example.frontmicroservice.constant.RoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -22,6 +17,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ApplicationConfig {
     @Autowired
     UserDetailsService userDetailsService;
+
+    /*@Bean
+    public Docket api() {
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.any())
+                .build();
+        return docket;
+    }*/
 
     @Bean
     public WebClient.Builder webClientBuilder() {
@@ -33,7 +38,7 @@ public class ApplicationConfig {
         return httpSecurity
                 .csrf().and()
                 .authorizeHttpRequests()
-                .requestMatchers("/start-page", "/new-order").permitAll()
+                .requestMatchers("/start-page", "/new-order", "/swagger-ui").permitAll()
                 .requestMatchers("/account/homepage").authenticated()
                 //.hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()

@@ -1,6 +1,5 @@
 package com.example.frontmicroservice.repository;
 
-import com.example.frontmicroservice.entity.Account;
 import com.example.frontmicroservice.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

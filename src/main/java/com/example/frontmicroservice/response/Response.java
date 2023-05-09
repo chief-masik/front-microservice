@@ -1,6 +1,5 @@
 package com.example.frontmicroservice.response;
 
-import com.example.frontmicroservice.response.data.ResponseTariffs;
 import com.example.frontmicroservice.response.error.Error;
 import lombok.*;
 

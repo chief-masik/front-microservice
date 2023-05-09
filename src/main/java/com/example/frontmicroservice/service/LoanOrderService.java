@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface LoanOrderService {
     public Response<ResponseTariffs> getAllTariff();
-    public Response<ResponseOrders> getOrdersById();
+    public Response<ResponseOrders> getOrdersById(Long userId);
     public Response<ResponseOrderId> newOrder(LoanOrderToCreate loanOrderToCreate);
     public Response<ResponseStatus> getStatus(UUID orderId);
     public Error deleteOrder(LoanOrderToDelete loanOrderToDelete);
