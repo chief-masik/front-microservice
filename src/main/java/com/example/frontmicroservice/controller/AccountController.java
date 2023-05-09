@@ -9,7 +9,6 @@ import com.example.frontmicroservice.response.data.ResponseTariffs;
 import com.example.frontmicroservice.response.error.Error;
 import com.example.frontmicroservice.service.AccountService;
 import com.example.frontmicroservice.service.LoanOrderService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @Slf4j
+@Validated
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/account")
@@ -34,7 +35,6 @@ public class AccountController {
     @Autowired
     LoanOrderService loanOrderService;
 
-    @Operation(summary = "Registration page")
     @GetMapping("/registration")
     public String getRegistration(@RequestParam(name = "problem", required = false) String problem, Model model) {
 
@@ -44,14 +44,13 @@ public class AccountController {
         return "registration";
     }
 
-    @Operation(summary = "Login on start page")
     @PostMapping("/registration")
     public String postRegistration(@ModelAttribute("accountForm") @Valid FormAccountDTO accountForm, BindingResult bindingResult) {
         String problem;
         log.info("bello!!!  " + bindingResult.toString());
         if (bindingResult.hasErrors()) {
             problem = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            log.error("bindingResult has errors: " + problem);
+            log.error("accountForm не валидна: " + problem);
             return "redirect:registration?problem=" + problem;
         }
         else {
@@ -64,13 +63,11 @@ public class AccountController {
         }
     }
 
-    @Operation(summary = "Start page")
     @GetMapping("/start-page")
     public String startPage() {
         return "start-page";
     }
 
-    @Operation(summary = "Get homepage")
     @GetMapping("/homepage")
     public String homepage(@RequestParam(name = "problem", required = false) String problem, Model model) {
 
@@ -88,7 +85,6 @@ public class AccountController {
         return "homepage";
     }
 
-    @Operation(summary = "Create new order")
     @PostMapping("/newOrder")
     public String newOrder(@ModelAttribute SelectTariff selectTariff) {
 
@@ -104,7 +100,6 @@ public class AccountController {
         return "redirect:http://localhost:8765/account/homepage" + problem;
     }
 
-    @Operation(summary = "Delete order")
     @PostMapping("/deleteOrder")
     public String deleteOrder(@ModelAttribute("accountForm") LoanOrderToDelete loanOrderToDelete) {
 
@@ -118,7 +113,6 @@ public class AccountController {
         return "redirect:http://localhost:8765/account/homepage" + problem;
     }
 
-    @Operation(summary = "Get order status")
     @GetMapping("/getStatus")
     public String getStatus() {
 

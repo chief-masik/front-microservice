@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -35,6 +36,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
     private WebClient.Builder webClientBuilder;
 
     @Override
+    @Cacheable(cacheNames = "cacheGetAllTariff")
     public Response<ResponseTariffs> getAllTariff() {
 
         ResponseEntity<String> responseEntity = webClientBuilder.build()
