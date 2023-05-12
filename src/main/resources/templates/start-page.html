@@ -25,6 +25,7 @@
                         <input type="password" class="form-control" name="password" placeholder="Пароль">
                     </div>
                     <button type="submit" class="btn btn-primary">Войти</button>
+                    <div th:if="${error}" class="error-message text-center" th:text="${error}"></div>
                 </form>
                 <div class="mt-3">
                     <span>У вас нет аккаунта?</span>

@@ -19,7 +19,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class ApplicationConfig {
     @Autowired
     UserDetailsService userDetailsService;
-
     @Bean
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder().baseUrl("http://localhost:8765");
@@ -38,8 +37,9 @@ public class ApplicationConfig {
                     .loginPage("http://localhost:8765/account/start-page")
                     .loginProcessingUrl("/account/perform_login")
                     .defaultSuccessUrl("http://localhost:8765/account/homepage")
+                    .failureUrl("http://localhost:8765/account/start-page?error=invalid_credentials")
                 .and().logout()
-                    .logoutUrl("/account/logout")
+                    .logoutUrl("http://localhost:8765/account/logout")
                     .logoutSuccessUrl("http://localhost:8765/account/start-page")
                 .and().authenticationManager(authenticationManager(httpSecurity)).build();
     }

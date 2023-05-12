@@ -22,12 +22,12 @@ public class AccountServiceImpl implements AccountService {
     public String saveAccount(FormAccountDTO formAccountDTO) {
 
         if (accountRepository.findAccountByName(formAccountDTO.getName()) != null)
-            return ProblemEnum.USERNAME_NOT_AVAILABLE.toString();
+            return ProblemEnum.USERNAME_NOT_AVAILABLE.getDescription();
 
         int a = accountRepository.saveAccount(formAccountDTO.getName(), bCryptPasswordEncoder.encode(formAccountDTO.getPassword()), RoleEnum.USER.toString());
 
         if (a != 1)
-            return ProblemEnum.SOMETHING_WENT_WRONG.toString();
+            return ProblemEnum.SOMETHING_WENT_WRONG.getDescription();
 
         return null;
     }

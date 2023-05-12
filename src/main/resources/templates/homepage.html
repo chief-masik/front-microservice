@@ -62,11 +62,11 @@
                         <td th:text="${order.status}"></td>
                         <td th:text="${#temporals.format(order.timeInsert, 'dd-MM-yyyy HH:mm')}"></td>
                         <td th:text="${#temporals.format(order.timeUpdate, 'dd-MM-yyyy HH:mm')}"></td>
-                        <!-- Create a form with a button to submit a POST request to /account/newOrder with the selected tariff ID -->
+                        <!-- Create a form with a button to submit a POST request to /account/deleteOrder with the selected order ID -->
                         <td>
                             <form th:action="@{/account/deleteOrder}" th:object="${loanOrderToDelete}" method="POST">
                                 <input type="hidden" name="orderId" th:value="${order.orderId}">
-                                <button type="submit" >Delete</button>
+                                <button type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -77,6 +77,10 @@
     </div>
 
     <div class="text-center mt-5">
+        <a href="/account/logout" class="logout-button">Logout</a>
+    </div>
+
+    <div class="footer">
         <p>by Maksim Pyatakov, 2023</p>
     </div>
 </div>

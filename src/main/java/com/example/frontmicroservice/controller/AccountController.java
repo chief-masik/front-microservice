@@ -9,6 +9,7 @@ import com.example.frontmicroservice.response.data.ResponseTariffs;
 import com.example.frontmicroservice.response.error.Error;
 import com.example.frontmicroservice.service.AccountService;
 import com.example.frontmicroservice.service.LoanOrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @Slf4j
@@ -36,46 +37,37 @@ public class AccountController {
     LoanOrderService loanOrderService;
 
     @GetMapping("/registration")
-    public String getRegistration(@RequestParam(name = "problem", required = false) String problem, Model model) {
+    public String getRegistration(Model model) {
 
         model.addAttribute("accountForm", new FormAccountDTO());
-        if(problem != null)
-            model.addAttribute("problem", problem);
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String postRegistration(@ModelAttribute("accountForm") @Valid FormAccountDTO accountForm, BindingResult bindingResult) {
-        String problem;
-        log.info("bello!!!  " + bindingResult.toString());
-        if (bindingResult.hasErrors()) {
-            problem = bindingResult.getAllErrors().get(0).getDefaultMessage();
-            log.error("accountForm не валидна: " + problem);
-            return "redirect:registration?problem=" + problem;
-        }
-        else {
-            problem = accountService.saveAccount(accountForm);
+    public String postRegistration(@ModelAttribute("accountForm") @Valid FormAccountDTO accountForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-            if (problem != null)
-                return "redirect:http://localhost:8765/account/registration?problem=" + problem;
-            else
-                return "start-page";
+        String problem = accountService.saveAccount(accountForm);
+
+        if (problem != null) {
+            redirectAttributes.addFlashAttribute("errors", problem);
+            return "redirect:http://localhost:8765/account/registration";
         }
+        else
+            return "start-page";
     }
 
     @GetMapping("/start-page")
-    public String startPage() {
+    public String startPage(@RequestParam(name = "error", required = false) String error, Model model) {
+        model.addAttribute("error", error);
         return "start-page";
     }
 
     @GetMapping("/homepage")
-    public String homepage(@RequestParam(name = "problem", required = false) String problem, Model model) {
+    public String homepage(Model model) {
 
         userId = ((Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         model.addAttribute("selectTariff", new SelectTariff());
         model.addAttribute("loanOrderToDelete", new LoanOrderToDelete());
-        if(problem != null)
-            model.addAttribute("problem", problem);
 
         Response<ResponseTariffs> responseTariffs = loanOrderService.getAllTariff();            // тарифы
         model.addAttribute("tariffs", responseTariffs.getData().getTariffs());
@@ -86,31 +78,29 @@ public class AccountController {
     }
 
     @PostMapping("/newOrder")
-    public String newOrder(@ModelAttribute SelectTariff selectTariff) {
+    public String newOrder(@ModelAttribute SelectTariff selectTariff, RedirectAttributes redirectAttributes) {
 
-        String problem = "";
         LoanOrderToCreate loanOrderToCreate = LoanOrderToCreate.builder()
                 .userId(userId)
                 .tariffId(selectTariff.getTariffId()).build();
 
         Response<ResponseOrderId> response = loanOrderService.newOrder(loanOrderToCreate);
         if (response.getError() != null)
-            problem = "?problem=" + response.getError().getCode();
+            redirectAttributes.addFlashAttribute("problem", response.getError().getCode());
 
-        return "redirect:http://localhost:8765/account/homepage" + problem;
+        return "redirect:http://localhost:8765/account/homepage";
     }
 
     @PostMapping("/deleteOrder")
-    public String deleteOrder(@ModelAttribute("accountForm") LoanOrderToDelete loanOrderToDelete) {
+    public String deleteOrder(@ModelAttribute("accountForm") LoanOrderToDelete loanOrderToDelete, RedirectAttributes redirectAttributes) {
 
-        String problem = "";
         loanOrderToDelete.setUserId(userId);
 
         Error error = loanOrderService.deleteOrder(loanOrderToDelete);
         if (!error.getCode().equals(HttpStatus.OK.toString()))
-            problem = "?problem=" + error.getCode();
+            redirectAttributes.addFlashAttribute("problem", error.getCode());
 
-        return "redirect:http://localhost:8765/account/homepage" + problem;
+        return "redirect:http://localhost:8765/account/homepage";
     }
 
     @GetMapping("/getStatus")

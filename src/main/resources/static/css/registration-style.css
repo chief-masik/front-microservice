@@ -24,10 +24,18 @@ h3 {
     margin-top: 30px;
 }
 
+.error-message {
+    background-color: #ffcccc;
+    color: #cc0000;
+    padding: 5px;
+    border: 1px solid #cc0000;
+    margin-top: 12px;
+}
+
 .form-container {
     background-color: #f2f2f2;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 20px;
     text-align: center;
 }
 
@@ -44,6 +52,4 @@ h3 {
 .custom-margin {
     margin-top: 4.7%;
 }
-
-
 

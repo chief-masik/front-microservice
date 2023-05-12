@@ -25,6 +25,11 @@
                         <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Пароль">
                     </div>
                     <button type="submit" class="btn btn-primary">Зарегестрироваться</button>
+                    <div th:if="${errors}" class="error-message text-center">
+                        <ul>
+                            <li th:each="error : ${errors}" th:text="${error}"></li>
+                        </ul>
+                    </div>
                 </form>
                 <div class="mt-3">
                     <span>Уже есть аккаунт?</span>
